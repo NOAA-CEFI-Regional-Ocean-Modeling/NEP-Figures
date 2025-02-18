@@ -1,0 +1,10 @@
+# Ignore vim and emacs files
+*.swp
+*~
+html
+
+# Ignore pycache
+**__pycache__
+
+# Ignore .ipynb_checkpoints
+**.ipynb_checkpoints/
