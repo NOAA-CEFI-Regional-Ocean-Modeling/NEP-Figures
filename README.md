@@ -11,4 +11,9 @@ conda activate /nbhome/role.medgrp/.conda/envs/medpy311
 Otherwise, feel free to install this environment on your system using this [yaml file](https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MEDpy/blob/main/med_py311.yml).
 
 ## R Notebook
-The notebooks `Figure_19_20/Calculate_Coldpool_Areas.ipynb` is written in R, and makes use of the R libraries `coldpool` and `akgfmaps`. We are currently experiencing issues integrating these libraries with conda, so we do not have an environment available to run that notebook. If you would like to run the code there, feel free to copy it into an R file and run that directly until we can provide a solution that integrates with Jupyter.
+The notebook `Figure_19_20/Calculate_Coldpool_Areas.ipynb` is written in R, and makes use of the R libraries `coldpool` and `akgfmaps`. MED currently provides a minimal R environment installed via conda that should be capable of running these notebooks. You can activate this environment on PPAN via the following commands:
+```
+module load miniforge
+conda activate /work/role.medgrp/conda/r_env/
+```
+If you would like to install this environment for yourself, we also provide a [yaml file](https://github.com/NOAA-CEFI-Regional-Ocean-Modeling/MEDpy/blob/main/r_env.yml) with the necessary `R` packages you would need to install from conda before installing `coldpool` and `akfgmaps` using the [instructions](https://github.com/afsc-gap-products/coldpool?tab=readme-ov-file) provided in the coldpool repo.
