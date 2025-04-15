@@ -8,3 +8,6 @@ html
 
 # Ignore .ipynb_checkpoints
 **.ipynb_checkpoints/
+
+# Ignore job output
+**job_output_files/
