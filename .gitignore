@@ -11,3 +11,6 @@ html
 
 # Ignore job output
 **job_output_files/
+
+# Ignore job output
+**output/
