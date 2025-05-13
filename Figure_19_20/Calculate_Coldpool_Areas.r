@@ -2,7 +2,7 @@ library(coldpool)
 library(akgfmaps)
 
 proj_crs <- coldpool:::ebs_proj_crs
-experiment <- "no_bias_correction"
+experiment <- "MBC_FIX"
 experiment_dir <- paste('/work/Utheri.Wagura/NEP/plotting/Figure_19_20',experiment, sep='/')
 ebs_nep_csv_path <- paste( experiment_dir, 'index_hauls_temperature_data_nep.csv', sep='/')
 print( paste("Working with the following ebs file:",ebs_nep_csv_path, sep = " " ) )
@@ -12,7 +12,7 @@ print("Interpolating index hauls")
 interpolation_wrapper(temp_data_path = ebs_nep_csv_path,
                       proj_crs = proj_crs,
                       cell_resolution = 5000, # 5x5 km grid resolution
-                      select_years = 1993:2019,
+                      select_years = 1993:2024,# NOTE: This should be 2024
                       interp_variable = "nep_tob",
                       select_region = "sebs",
                       methods = "Ste")
@@ -38,13 +38,15 @@ ebs_layers <- akgfmaps::get_base_layers(select.region = "sebs", set.crs = proj_c
 
 print("Creating lt100 strata")
 lt100_strata <- ebs_layers$survey.strata |>
-  dplyr::filter(STRATUM %in% c(10, 20, 31, 32, 41, 42, 43)) |>
-  dplyr::group_by(SURVEY_DEFINITION_ID) |>
+  #dplyr::filter(STRATUM %in% c(10, 20, 31, 32, 41, 42, 43)) |> #NOTE: Use these keys in v4
+  #dplyr::group_by(SURVEY_DEFINITION_ID) |> #NOTE: THIS IS NOT THE SAME THING AS SURVEY, SEE JOB_OUTPUT_FILES/FIX and work on debugging this!
+  dplyr::filter(Stratum %in% c(10, 20, 31, 32, 41, 42, 43)) |>
+  dplyr::group_by(SURVEY) |>
   dplyr::summarise()
+
 
 print("Looping over bottom temp files")
 for(i in 1:length(bottom_temp_files)) {
-  print(i)
   bt_raster <- terra::rast(bottom_temp_files[i])
   bt_df$YEAR[i] <- as.numeric(gsub("[^0-9.-]", "", names(bt_raster))) # Extract year
   bt_df$AREA_LTE2_KM2[i] <- bt_raster |>
@@ -70,7 +72,7 @@ write.csv(bt_df, paste( experiment_dir, "nep_cpa.csv", sep="/") , row.names=FALS
 interpolation_wrapper(temp_data_path = ebs_nep_csv_path,
                       proj_crs = proj_crs,
                       cell_resolution = 5000, # 5x5 km grid resolution
-                      select_years = 1993:2019, # TODO: 2020 data is missing, leading to error.
+                      select_years = c(1993:2019,2021:2023), # NOTE: 2020 data is missing, and this should go to 2024
                       interp_variable = "gear_temperature",
                       select_region = "sebs",
                       methods = "Ste")
@@ -96,13 +98,14 @@ ebs_layers <- akgfmaps::get_base_layers(select.region = "sebs", set.crs = proj_c
 
 print("lt100_strat")
 lt100_strata <- ebs_layers$survey.strata |>
-  dplyr::filter(STRATUM %in% c(10, 20, 31, 32, 41, 42, 43)) |>
-  dplyr::group_by(SURVEY_DEFINITION_ID) |>
+  #dplyr::filter(STRATUM %in% c(10, 20, 31, 32, 41, 42, 43)) |>
+  #dplyr::group_by(SURVEY_DEFINITION_ID) |>
+  dplyr::filter(Stratum %in% c(10, 20, 31, 32, 41, 42, 43)) |>
+  dplyr::group_by(SURVEY) |>
   dplyr::summarise()
 
 print("Listing bottom temp files")
 for(i in 1:length(bottom_temp_files)) {
-  print(i)
   bt_raster <- terra::rast(bottom_temp_files[i])
   bt_df$YEAR[i] <- as.numeric(gsub("[^0-9.-]", "", names(bt_raster))) # Extract year
   bt_df$AREA_LTE2_KM2[i] <- bt_raster |>
