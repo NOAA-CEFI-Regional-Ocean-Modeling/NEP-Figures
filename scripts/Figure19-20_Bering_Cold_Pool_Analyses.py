@@ -125,60 +125,60 @@ df = df[df.year >= 1993].reset_index(drop=True)
 #df = df[df.year <= 2019].reset_index(drop=True)
 df = df[df.haul_type == 3].reset_index(drop=True)
 
-## Figure details
-#widths = [10,10,.5,10,10]
-#fig = plt.figure(figsize=(28,7),dpi=300)
-#spec = fig.add_gridspec(ncols=5, nrows=1,wspace=0,hspace=0.,width_ratios=widths)  
-#ncol = 0    
-#plot_labels = ['a','b','c','d','e','f','g','h','i']
-#
-## allocating a bunch of map axes
-#ax1 = fig.add_subplot(spec[0,0], projection=ccrs.EquidistantConic(central_longitude=190,central_latitude=62))
-#ax2 = fig.add_subplot(spec[0,1], projection=ccrs.EquidistantConic(central_longitude=190,central_latitude=62))
-#ax3 = fig.add_subplot(spec[0,3], projection=ccrs.EquidistantConic(central_longitude=190,central_latitude=62))
-#ax4 = fig.add_subplot(spec[0,4], projection=ccrs.EquidistantConic(central_longitude=190,central_latitude=62))
-#
-## iterating over station IDs
-#nax=0
-#for station_id,nid in zip(np.unique(df.stationid),range(len(np.unique(df.stationid)))): 
-#
-#    tmp_df = df[df['stationid']==station_id].reset_index(drop=True).sort_values(by=['year'])
-#
-#    nyrs = len(tmp_df.year)
-#    lat = np.mean(tmp_df.latitude)
-#    lon = np.mean(tmp_df.longitude)
-#    
-#    trawl_temp = np.array(tmp_df.gear_temperature)
-#    nep_tob = np.array(tmp_df.nep_tob)
-#   
-#    # Mean NEP
-#    nep_tob_mean = np.nanmean(nep_tob)
-#    #print(nep_tob_mean)
-#    plot_point(ax1,np.nanmean(nep_tob_mean),cold_pool_map,np.linspace(-2,10,25),
-#               'mean\n ($^{\circ}$C)', colorbar=True,title='NEP10k')
-#    
-#    nax+=1
-#    # Mean Trawl
-#    trawl_temp_mean = np.mean(trawl_temp)
-#    #print(trawl_temp_mean)
-#    plot_point(ax2,trawl_temp_mean,cold_pool_map,np.linspace(-2,10,25),
-#               'mean\n ($^{\circ}$C)',title='AFSC Bottom Trawl')
-#    nax+=1
-#    # Mean Bias (NEP-Trawl)
-#    mean_bias = np.nanmean(nep_tob-trawl_temp)
-#    #print(mean_bias)
-#    plot_point(ax3,mean_bias,plt.cm.seismic,np.linspace(-4,4,17), 'mean bias\n ($^{\circ}$C)',colorbar=True)
-#    nax+=1
-#
-#    # RMSE (NEP vs. Trawl)
-#    rmse = np.sqrt(np.nanmean((nep_tob-trawl_temp)**2))
-#    #print(rmse)
-#    plot_point(ax4,rmse,plt.cm.hot_r,np.linspace(0,2,17),'RMSE\n ($^{\circ}$C)',colorbar=True)
-#    nax+=1
-#
-#ax3.text(1,1.02,'NEP10k - Trawl Comparisons',horizontalalignment='center',fontsize=25,transform=ax3.transAxes)        
-#
-#plt.savefig(f'/work/Utheri.Wagura/NEP/plotting/Figure_19_20/{experiment}/Figure19_Bering_Cold_Pool_2D_Map')
+# Figure details
+widths = [10,10,.5,10,10]
+fig = plt.figure(figsize=(28,7),dpi=300)
+spec = fig.add_gridspec(ncols=5, nrows=1,wspace=0,hspace=0.,width_ratios=widths)  
+ncol = 0    
+plot_labels = ['a','b','c','d','e','f','g','h','i']
+
+# allocating a bunch of map axes
+ax1 = fig.add_subplot(spec[0,0], projection=ccrs.EquidistantConic(central_longitude=190,central_latitude=62))
+ax2 = fig.add_subplot(spec[0,1], projection=ccrs.EquidistantConic(central_longitude=190,central_latitude=62))
+ax3 = fig.add_subplot(spec[0,3], projection=ccrs.EquidistantConic(central_longitude=190,central_latitude=62))
+ax4 = fig.add_subplot(spec[0,4], projection=ccrs.EquidistantConic(central_longitude=190,central_latitude=62))
+
+# iterating over station IDs
+nax=0
+for station_id,nid in zip(np.unique(df.stationid),range(len(np.unique(df.stationid)))): 
+
+    tmp_df = df[df['stationid']==station_id].reset_index(drop=True).sort_values(by=['year'])
+
+    nyrs = len(tmp_df.year)
+    lat = np.mean(tmp_df.latitude)
+    lon = np.mean(tmp_df.longitude)
+    
+    trawl_temp = np.array(tmp_df.gear_temperature)
+    nep_tob = np.array(tmp_df.nep_tob)
+   
+    # Mean NEP
+    nep_tob_mean = np.nanmean(nep_tob)
+    #print(nep_tob_mean)
+    plot_point(ax1,np.nanmean(nep_tob_mean),cold_pool_map,np.linspace(-2,10,25),
+               'mean\n ($^{\circ}$C)', colorbar=True,title='NEP10k')
+    
+    nax+=1
+    # Mean Trawl
+    trawl_temp_mean = np.mean(trawl_temp)
+    #print(trawl_temp_mean)
+    plot_point(ax2,trawl_temp_mean,cold_pool_map,np.linspace(-2,10,25),
+               'mean\n ($^{\circ}$C)',title='AFSC Bottom Trawl')
+    nax+=1
+    # Mean Bias (NEP-Trawl)
+    mean_bias = np.nanmean(nep_tob-trawl_temp)
+    #print(mean_bias)
+    plot_point(ax3,mean_bias,plt.cm.seismic,np.linspace(-4,4,17), 'mean bias\n ($^{\circ}$C)',colorbar=True)
+    nax+=1
+
+    # RMSE (NEP vs. Trawl)
+    rmse = np.sqrt(np.nanmean((nep_tob-trawl_temp)**2))
+    #print(rmse)
+    plot_point(ax4,rmse,plt.cm.hot_r,np.linspace(0,2,17),'RMSE\n ($^{\circ}$C)',colorbar=True)
+    nax+=1
+
+ax3.text(1,1.02,'NEP10k - Trawl Comparisons',horizontalalignment='center',fontsize=25,transform=ax3.transAxes)        
+
+plt.savefig(f'/work/Utheri.Wagura/NEP/plotting/Figure_19_20/{experiment}/Figure19_Bering_Cold_Pool_2D_Map')
 
 
 # In[7]:
